@@ -6,15 +6,15 @@
 # ANL:waggle-license
 
 FROM ubuntu:18.04
-
+# TODO arg or env for ubuntu version
 RUN apt-get update && apt-get install -y \
-  mkisofs \
-  wget
+  curl \
+  mkisofs
 
-COPY ROOTFS/ /
+RUN curl -L http://cdimage.ubuntu.com/releases/18.04/release/ubuntu-18.04.5-server-amd64.iso > /ubuntu-18.04.5-server-amd64.iso
 
-WORKDIR /opt/sage/blade/image/
+COPY ROOTFS/ /ROOTFS
 
-RUN chmod +x build_image.sh
+COPY iso_tools /iso_tools
 
-CMD ["./build_image.sh"]
+COPY create_image.sh .

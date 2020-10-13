@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# First boot script on end-system
+
+sed -i '/efi/d' /etc/fstab
+sed -i '/\/media\/sys-data/d' /etc/fstab
+# umount /boot/efi
+# umount /media/sys-data
+
+grub-mkconfig -o /boot/grub/grub.cfg
+
+# configure docker plugin-data partition
+ln -s /media/plugin-data /var/lib/docker
+
+mv /etc/rc.local /etc/rc.local.$(date '+%Y%m%d-%H%M%S').bck
+reboot
