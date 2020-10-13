@@ -20,15 +20,15 @@ if [ $? -eq 0 ]; then
     # echo "140.221.47.67 beehive" >> /etc/hosts
     ln -s /media/plugin-data /var/lib/docker
 
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+    # add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
-    apt-get -y update
-    apt-get -y install ssh ansible git htop iotop iftop bwm-ng screen nmap sshfs autossh network-manager apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-    apt-get -y install docker-ce docker-ce-cli containerd.io
-
-    curl -L https://github.com/waggle-sensor/beekeeper-registration/releases/download/v1.1.0/waggle-registration_1.1.0.local-47ccaae_all.deb > waggle-registration.deb
-    curl -L https://github.com/waggle-sensor/beekeeper-registration/releases/download/v1.1.0/waggle-reverse-tunnel_1.1.0.local-47ccaae_all.deb > waggle-reverse-tunnel.deb
+    # apt-get -y update
+    # apt-get -y install ssh ansible git htop iotop iftop bwm-ng screen nmap sshfs autossh network-manager apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+    # apt-get -y install docker-ce docker-ce-cli containerd.io
+    #
+    # curl -L https://github.com/waggle-sensor/beekeeper-registration/releases/download/v1.1.0/waggle-registration_1.1.0.local-47ccaae_all.deb > waggle-registration.deb
+    # curl -L https://github.com/waggle-sensor/beekeeper-registration/releases/download/v1.1.0/waggle-reverse-tunnel_1.1.0.local-47ccaae_all.deb > waggle-reverse-tunnel.deb
 
     echo "ListenAddress 127.0.0.1" >> /etc/ssh/sshd_config
     echo "PasswordAuthentication no" >> /etc/ssh/sshd_config
@@ -41,8 +41,8 @@ if [ $? -eq 0 ]; then
     netplan apply
     systemctl restart network-manager
 
-    dpkg -i waggle-registration.deb
-    dpkg -i waggle-reverse-tunnel.deb
+    # dpkg -i waggle-registration.deb
+    # dpkg -i waggle-reverse-tunnel.deb
 
     sed -i 's|overlayroot=""|overlayroot="device:dev=/dev/sda4,timeout=180,recurse=0"|' /etc/overlayroot.conf
     echo "Set up finished, please reboot now..."
@@ -52,7 +52,7 @@ else
     echo "Offline, no network connectivity, so trying offline install"
     cp -r /root/apt/* /var/cache/apt/
     sync /var/cache/apt/
-    apt-get -y install ssh ansible git htop iotop iftop bwm-ng screen nmap sshfs autossh network-manager apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+    # apt-get -y install ssh ansible git htop iotop iftop bwm-ng screen nmap sshfs autossh network-manager apt-transport-https ca-certificates curl gnupg-agent software-properties-common
     rm /etc/netplan/*.yaml
     cp /root/01-network-manager-all.yaml /etc/netplan/01-network-manager-all.yaml
     netplan generate

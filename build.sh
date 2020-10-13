@@ -37,8 +37,12 @@ DIRTY=$([[ -z $(git status -s) ]] || echo '-dirty')
 PROJ_VERSION=${BASE_VERSION}-${GIT_SHA}${DIRTY}
 PWD=`pwd`
 
+# get the list of all required debian packages to install in final image
+REQ_PACKAGES=$(sed -e '/^#/d' required_deb_packages.txt | tr '\n' ' ')
+
 # create and run the Docker build environment
-docker build -f Dockerfile -t blade_image_build .
+docker build -f Dockerfile -t blade_image_build \
+    --build-arg REQ_PACKAGES="${REQ_PACKAGES}" .
 docker run $TTY --rm --privileged \
     -v ${PWD}:/output \
     --env OUTPUT_NAME=${OUTPUT_NAME} \

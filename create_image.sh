@@ -4,7 +4,7 @@ echo "Building Dell SAGE Ubuntu [$VERSION]"
 
 #unpack iso
 mkdir /mnt/iso
-mount -o loop /ubuntu-18.04.5-server-amd64.iso /mnt/iso/
+mount -o loop /${UBUNTU_IMG} /mnt/iso/
 
 #move contents to rw access
 mkdir /iso
@@ -15,10 +15,9 @@ cp /iso_tools/preseed.seed /iso/preseed/
 cp /iso_tools/grub.cfg /iso/boot/grub/grub.cfg
 cp /iso_tools/txt.cfg /iso/isolinux/txt.cfg
 
-# TODO: get the base packages into the iso/rootfs
-# mkdir -p iso/wscripts
-# cp base_packages iso/wscripts/
-# cp -r wscripts/* iso/wscripts
+# copy required debs
+mkdir -p /iso/pool/extras
+cp -r /isodebs/* /iso/pool/extras/
 
 mkdir -p /ROOTFS/etc
 echo $VERSION > /ROOTFS/etc/sage_version_os
