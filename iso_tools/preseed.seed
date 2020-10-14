@@ -116,14 +116,8 @@ d-i debian-installer/exit/poweroff                          boolean     false
 
 # setup firstrun script
 d-i preseed/late_command                                    string \
-    in-target /usr/bin/find / -type f | /bin/grep waggle-registration ; \
-    in-target /bin/ls -la /pool/extras/ ; \
-    in-target /usr/bin/dpkg -i /pool/extras/*.deb ; \
-    in-target /bin/ls -la /cdrom/pool/extras/ ; \
-    in-target /usr/bin/dpkg -i /cdrom/pool/extras/*.deb ; \
-    in-target which dpkg ; \
-    in-target which chmod ; \
-    in-target /usr/bin/which dpkg ; \
-    in-target /usr/bin/which chmod ; \
+    in-target /usr/bin/find / -type f ; \
+    in-target /bin/ls -la /media/cdrom/pool/extras/ ; \
+    in-target /usr/bin/dpkg -i /media/cdrom/pool/extras/*.deb ; \
     cp -r /cdrom/ROOTFS/* /target/ ; \
     in-target /bin/chmod +x /etc/rc.local
