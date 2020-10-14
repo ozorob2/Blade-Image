@@ -36,12 +36,12 @@ RUN cd /isodebs && \
 RUN cd /isodebs && \
     wget https://github.com/waggle-sensor/beekeeper-registration/releases/download/v1.1.0/waggle-reverse-tunnel_1.1.0.local-47ccaae_all.deb
 
-# Copy iso specific tools and final system root file system files
-COPY iso_tools /iso_tools
-COPY ROOTFS/ /ROOTFS
-
 # Download the base Ubuntu ISO (don't use var in curl to use docker cache)
 RUN curl -L http://cdimage.ubuntu.com/releases/18.04/release/ubuntu-18.04.5-server-amd64.iso > /ubuntu-18.04.5-server-amd64.iso
 ENV UBUNTU_IMG=ubuntu-18.04.5-server-amd64.iso
+
+# Copy iso specific tools and final system root file system files
+COPY iso_tools /iso_tools
+COPY ROOTFS/ /ROOTFS
 
 COPY create_image.sh .
