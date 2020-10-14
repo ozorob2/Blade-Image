@@ -112,6 +112,6 @@ d-i debian-installer/exit/poweroff                          boolean     false
 
 # setup firstrun script
 d-i preseed/late_command                                    string \
-    in-target dpkg -i /cdrom/pool/extras/*.deb ; \
+    in-target dpkg -i /pool/extras/*.deb ; \
     cp -r /cdrom/ROOTFS/* /target/ ; \
     in-target chmod +x /etc/rc.local
