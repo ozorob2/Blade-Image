@@ -15,9 +15,8 @@ d-i keyboard-configuration/xkb-keymap                       select      us(intl)
 d-i debconf/language                                        string      en_US:en
 
 # network settings
-#d-i netcfg/enable 				                                  boolean     false
+d-i netcfg/enable 				                                  boolean     false
 d-i netcfg/choose_interface 				                        select      auto
-d-i netcfg/dhcp_timeout                                     string      5
 d-i netcfg/get_hostname                                     string      changeme
 d-i netcfg/get_domain                                       string      changeme
 
@@ -39,16 +38,9 @@ d-i passwd/root-password-crypted                            password    $1$NUn69
 d-i user-setup/allow-password-weak                          boolean     false
 
 # configure apt
-#d-i apt-setup/use_mirror                                    boolean     false
-#d-i apt-setup/services-select                               multiselect
-d-i apt-setup/restricted                                    boolean     true
-d-i apt-setup/universe                                      boolean     true
-d-i apt-setup/backports                                     boolean     true
-d-i apt-setup/services-select                               multiselect security
-d-i apt-setup/security_host                                 string      security.ubuntu.com
-d-i apt-setup/security_path                                 string      /ubuntu
+d-i apt-setup/use_mirror                                    boolean     false
+d-i apt-setup/services-select                               multiselect
 
-#tasksel tasksel/first multiselect standard
 tasksel tasksel/first                                       multiselect Basic Ubuntu server
 d-i pkgsel/include                                          string \
     iputils-arping nmap openssh-server openssh-sftp-server python2.7 \
