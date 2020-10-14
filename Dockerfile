@@ -40,8 +40,8 @@ RUN cd /isodebs && \
 COPY iso_tools /iso_tools
 COPY ROOTFS/ /ROOTFS
 
-# Download the base Ubuntu ISO
+# Download the base Ubuntu ISO (don't use var in curl to use docker cache)
+RUN curl -L http://cdimage.ubuntu.com/releases/18.04/release/ubuntu-18.04.5-server-amd64.iso > /ubuntu-18.04.5-server-amd64.iso
 ENV UBUNTU_IMG=ubuntu-18.04.5-server-amd64.iso
-RUN curl -L http://cdimage.ubuntu.com/releases/18.04/release/$UBUNTU_IMG > /$UBUNTU_IMG
 
 COPY create_image.sh .
