@@ -6,16 +6,11 @@
 # ANL:waggle-license
 
 FROM ubuntu:18.04
-# TODO arg or env for ubuntu version
+
 RUN apt-get update && apt-get install -y \
   curl \
   mkisofs \
   wget
-
-ENV UBUNTU_IMG=ubuntu-18.04.5-server-amd64.iso
-RUN curl -L http://cdimage.ubuntu.com/releases/18.04/release/$UBUNTU_IMG > /$UBUNTU_IMG
-
-COPY ROOTFS/ /ROOTFS
 
 # Add the docker sources as `docker` is in the REQ Package list
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -41,6 +36,12 @@ RUN cd /isodebs && \
 RUN cd /isodebs && \
     wget https://github.com/waggle-sensor/beekeeper-registration/releases/download/v1.1.0/waggle-reverse-tunnel_1.1.0.local-47ccaae_all.deb
 
+# Copy iso specific tools and final system root file system files
 COPY iso_tools /iso_tools
+COPY ROOTFS/ /ROOTFS
+
+# Download the base Ubuntu ISO
+ENV UBUNTU_IMG=ubuntu-18.04.5-server-amd64.iso
+RUN curl -L http://cdimage.ubuntu.com/releases/18.04/release/$UBUNTU_IMG > /$UBUNTU_IMG
 
 COPY create_image.sh .
