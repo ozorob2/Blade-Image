@@ -32,3 +32,4 @@ mkisofs -D -r -V "AUTOINSTALL" -cache-inodes -J -l -b isolinux/isolinux.bin \
     /tmp/${ouputfile} .
 popd
 mv /tmp/${ouputfile} /output
+echo "SAGE ISO [${ouputfile}] created successfully."

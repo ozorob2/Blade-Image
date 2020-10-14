@@ -70,29 +70,33 @@ d-i partman/default_label string gpt
 
 d-i partman-auto/method string regular
 d-i partman-auto/choose_recipe select gpt-boot-root-swap
-d-i partman-auto/expert_recipe string         \
-   gpt-boot-root-swap ::                      \
-      200 200 200 fat32                       \
-         $primary{ }                          \
-         method{ efi } format{ } .            \
-      5000 250 5000 linux-swap                \
-         $primary{ }                          \
-         method{ swap } format{ } .           \
-      250000 350 250001 ext4                  \
-         $primary{ }                          \
-         method{ format } format{ }           \
-         use_filesystem{ } filesystem{ ext4 } \
-         mountpoint{ /media/plugin-data } .   \
-      550000 512 550001 ext4                  \
-         $primary{ }                          \
-         method{ format } format{ }           \
-         use_filesystem{ } filesystem{ ext4 } \
-         mountpoint{ /media/sys-data } .      \
-      12000 20000 12001 ext4                  \
-         $primary{ } $bootable{ }             \
-         method{ format } format{ }           \
-         use_filesystem{ } filesystem{ ext4 } \
-         mountpoint{ / } .
+# Swap: 16GB, / 16GB, sys-data 256GB, plugin-data 256GB (min; 100% of rest)
+d-i partman-auto/expert_recipe string            \
+    gpt-boot-root-swap ::                        \
+        200 200 200 fat32                        \
+            $primary{ }                          \
+            method{ efi } format{ } .            \
+        16384 16384 16384 linux-swap             \
+            $primary{ }                          \
+            method{ swap } format{ } .           \
+        16384 16384 16384 ext4                   \
+            $primary{ } $bootable{ }             \
+            method{ format } format{ }           \
+            use_filesystem{ } filesystem{ ext4 } \
+            label { root }                       \
+            mountpoint{ / } .                    \
+        262144 262144 262144 ext4                \
+            $primary{ }                          \
+            method{ format } format{ }           \
+            use_filesystem{ } filesystem{ ext4 } \
+            label { sys-data }                   \
+            mountpoint{ /media/sys-data } .      \
+        262144 262244 -1 ext4                    \
+            $primary{ }                          \
+            method{ format } format{ }           \
+            use_filesystem{ } filesystem{ ext4 } \
+            label { plugin-data }                \
+            mountpoint{ /media/plugin-data } .
 
 d-i partman-partitioning/confirm_write_new_label            boolean     true
 d-i partman/choose_partition                                select      finish
@@ -112,6 +116,6 @@ d-i debian-installer/exit/poweroff                          boolean     false
 
 # setup firstrun script
 d-i preseed/late_command                                    string \
-    in-target dpkg -i /pool/extras/*.deb ; \
+    dpkg -i /cdrom/pool/extras/*.deb ; \
     cp -r /cdrom/ROOTFS/* /target/ ; \
     in-target chmod +x /etc/rc.local
